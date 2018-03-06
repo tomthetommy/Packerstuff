@@ -21,5 +21,21 @@
     "ssh_username": "ubuntu",
     "ami_name": "apache2 {{timestamp}}",
     "ami_description": "Awesome image for apache2"
-  }]
+  }],
+  "provisioners": [
+  {
+    "type":"shell",
+    "script":"ansible.sh"
+   },
+   {
+     "type":"ansible-local",
+     "playbook_file": "./installapache2.yml"
+   },
+  {
+    "type":"shell",
+     "inline": [
+     "echo Hello!" ]
+   }
+   ]
+
 }
