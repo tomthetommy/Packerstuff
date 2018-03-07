@@ -34,7 +34,7 @@
   {
     "type":"shell",
      "inline": [
-     "echo Hello!" ]
+     "sudo sh -c 'echo \"<h1>Created with Terraform and Packer!</h1>\"  > /var/www/html/index.html'" ]
    }
    ]
 
