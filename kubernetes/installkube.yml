@@ -1,0 +1,51 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+  - name: Installing Docker
+    apt: name=docker.io update_cache=yes
+
+  - name: Installing Dependencies
+    apt:
+      name: "{{item}}"
+    with_items:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+     - software-properties-common
+    become: yes
+  - apt_key:
+      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+      state: present
+    become: yes
+  - apt_repository:
+     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+     state: present
+  - apt:
+      name: "{{item}}"
+      update_cache: yes
+      state: latest
+    become: yes
+    with_items:
+      - kubelet
+      - kubeadm
+      - kubectl
+      - kubernetes-cni
+  - user:
+     name: ansible
+     comment: "Ansible"
+     uid: 1010
+     group: sudo
+  - name: Set up multiple authorized keys
+    authorized_key:
+      user: ansible
+      state: present
+      key: '{{ item }}'
+    with_file:
+     - /tmp/ansible
+  - lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^ansible ALL='
+      line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+      validate: '/usr/sbin/visudo -cf %s'
