@@ -1,0 +1,36 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+  - name: Installing Dependencies
+    apt:
+      name: "{{item}}"
+      update_cache: yes
+    with_items:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+     - software-properties-common
+    become: yes
+  - apt:
+     deb: https://apt.puppetlabs.com/puppet5-release-xenial.deb
+     register: deb
+  - debug: var=deb.stdout_lines
+  - user:
+     name: ansible
+     comment: "Ansible"
+     uid: 1010
+     group: sudo
+  - name: Set up multiple authorized keys
+    authorized_key:
+      user: ansible
+      state: present
+      key: '{{ item }}'
+    with_file:
+     - /tmp/ansible
+  - lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^ansible ALL='
+      line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+      validate: '/usr/sbin/visudo -cf %s'
