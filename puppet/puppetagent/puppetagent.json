@@ -19,8 +19,8 @@
     },
     "instance_type": "t2.nano",
     "ssh_username": "ubuntu",
-    "ami_name": "Puppet-Master",
-    "ami_description": "puppet"
+    "ami_name": "Puppet-Agent",
+    "ami_description": "puppet agent"
   }],
   "provisioners": [
   {
@@ -29,7 +29,7 @@
    },
      {
       "destination": "/tmp/",
-      "source": "ansible",
+      "source": "../ansible",
       "type": "file"
     },
    {
