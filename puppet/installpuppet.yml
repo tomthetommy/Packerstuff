@@ -2,6 +2,8 @@
 - hosts: all
   sudo: yes
   tasks:
+  - apt:
+     deb: https://apt.puppetlabs.com/puppet5-release-xenial.deb
   - name: Installing Dependencies
     apt:
       name: "{{item}}"
@@ -10,12 +12,9 @@
      - apt-transport-https
      - ca-certificates
      - curl
+     - puppetserver
      - software-properties-common
     become: yes
-  - apt:
-     deb: https://apt.puppetlabs.com/puppet5-release-xenial.deb
-     register: deb
-  - debug: var=deb.stdout_lines
   - user:
      name: ansible
      comment: "Ansible"
@@ -34,3 +33,6 @@
       regexp: '^ansible ALL='
       line: 'ansible ALL=(ALL) NOPASSWD: ALL'
       validate: '/usr/sbin/visudo -cf %s'
+  - git:
+     repo: 'https://github.com/tomthetommy/puppetstuff.git'
+     dest: /home/ansible/puppet

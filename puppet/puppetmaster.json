@@ -19,7 +19,7 @@
     },
     "instance_type": "t2.nano",
     "ssh_username": "ubuntu",
-    "ami_name": "Puppet-Master{{isotime | clean_ami_name}}",
+    "ami_name": "Puppet-Master",
     "ami_description": "puppet"
   }],
   "provisioners": [
