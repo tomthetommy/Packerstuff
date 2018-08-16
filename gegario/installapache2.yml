@@ -1,0 +1,35 @@
+---
+- hosts: all
+  sudo: yes
+  tasks:
+  - name: Installing Apache2
+    apt: name=apache2 update_cache=yes
+
+  - name: Installing Dependencies
+    apt:
+      name: "{{item}}"
+    with_items:
+     - apt-transport-https
+     - ca-certificates
+     - curl
+     - software-properties-common
+     - php7.0
+    become: yes
+  - user:
+     name: ansible
+     comment: "Ansible"
+     uid: 1010
+     group: sudo
+  - name: Set up multiple authorized keys
+    authorized_key:
+      user: ansible
+      state: present
+      key: '{{ item }}'
+    with_file:
+     - /tmp/ansible
+  - lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^ansible ALL='
+      line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+      validate: '/usr/sbin/visudo -cf %s'
