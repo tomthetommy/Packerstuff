@@ -2,9 +2,6 @@
 - hosts: all
   sudo: yes
   tasks:
-  - name: Installing Apache2
-    apt: name=apache2 update_cache=yes
-
   - name: Installing Dependencies
     apt:
       name: "{{item}}"
@@ -14,6 +11,7 @@
      - curl
      - software-properties-common
      - php7.0
+     - libapache2-mod-php7.0
     become: yes
   - user:
      name: ansible

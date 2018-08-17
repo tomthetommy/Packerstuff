@@ -19,7 +19,7 @@
     },
     "instance_type": "t2.nano",
     "ssh_username": "ubuntu",
-    "ami_name": "Gegario_Apache",
+    "ami_name": "Gegario_Apache-{{timestamp}}",
     "ami_description": "Image for Gegario"
   }],
   "provisioners": [
