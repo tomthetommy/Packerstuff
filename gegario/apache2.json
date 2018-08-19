@@ -32,6 +32,11 @@
       "source": "ansible",
       "type": "file"
     },
+    {
+      "destination": "/tmp/",
+      "source": "apticron.conf",
+      "type": "file"
+    },
    {
      "type":"ansible-local",
      "playbook_file": "./installapache2.yml"

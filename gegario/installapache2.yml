@@ -2,11 +2,14 @@
 - hosts: all
   sudo: yes
   tasks:
-  - name: Update and upgrade apt packages
+  - name: Patch
     become: true
     apt:
-      upgrade: yes
       update_cache: yes
+      upgrade: dist
+    register: out
+  - name: display
+    debug: var=out
   - name: Installing Dependencies
     apt:
       name: "{{item}}"
@@ -36,3 +39,7 @@
       regexp: '^ansible ALL='
       line: 'ansible ALL=(ALL) NOPASSWD: ALL'
       validate: '/usr/sbin/visudo -cf %s'
+  - name: apticron | install debian ntp
+    apt: pkg=apticron state=present
+  - name: apticron | configure
+    template: src=/tmp/apticron.conf dest=/etc/apticron/apticron.conf owner=root group=root mode=0644 backup=yes
