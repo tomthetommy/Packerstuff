@@ -7,7 +7,7 @@
     "type": "amazon-ebs",
     "access_key": "{{user `aws_access_key`}}",
     "secret_key": "{{user `aws_secret_key`}}",
-    "region": "eu-west-1",
+    "region": "eu-west-2",
     "source_ami_filter": {
       "filters": {
       "virtualization-type": "hvm",
@@ -19,8 +19,8 @@
     },
     "instance_type": "t2.nano",
     "ssh_username": "ubuntu",
-    "ami_name": "Docker",
-    "ami_description": "Docker"
+    "ami_name": "Puppet-Master",
+    "ami_description": "puppet"
   }],
   "provisioners": [
   {
@@ -34,7 +34,7 @@
     },
    {
      "type":"ansible-local",
-     "playbook_file": "./installuser.yml"
+     "playbook_file": "./installpuppet.yml"
    }
 ]
 }
